@@ -1,0 +1,28 @@
+---
+apiVersion: gateway.mulesoft.com/v1alpha1
+kind: Extension
+metadata:
+  labels:
+    title: noname-flex-policy
+    category: Custom
+spec:
+  extends:
+    - name: extension-definition
+      namespace: default
+  properties:
+    nn_host:
+      type: string
+      format: service
+    nn_index:
+      type: integer
+      default: 1
+    nn_type:
+      type: integer
+      default: 1
+    nn_key:
+      type: string
+  required:
+    - nn_host
+    - nn_index
+    - nn_type
+    - nn_key

@@ -1,0 +1,42 @@
+name: setup-pdk
+description: Sets up the anypoint-cli-v4 for github actions
+inputs:
+  connected-app-id:
+    required: true
+    description: Connected app client id
+  connected-app-secret:
+    required: true
+    description: Connected app client secret
+  organization-id:
+    required: true
+    description: Anypoint org id
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup node
+      uses: actions/setup-node@v4
+    - name: Install Rust
+      shell: bash
+      run: curl https://sh.rustup.rs -sSf | sh -s -- -y
+    - name: Install WASI Crate
+      shell: bash
+      run: rustup target add wasm32-wasi
+    - name: Install Cargo Generate
+      shell: bash
+      run: cargo install --locked cargo-generate
+    - name: Install CLI
+      shell: bash
+      run: npm install -g anypoint-cli-v4
+    - name: Authenticate Anypoint CLI
+      shell: bash
+      run: |
+        anypoint-cli-v4 conf client_id $CONNECTED_APP_ID
+        anypoint-cli-v4 conf client_secret $CONNECTED_APP_SECRET
+        anypoint-cli-v4 conf organization $ORGANIZATION_ID
+      env:
+        CONNECTED_APP_ID: ${{ inputs.connected-app-id }}
+        CONNECTED_APP_SECRET: ${{ inputs.connected-app-secret }}
+        ORGANIZATION_ID: ${{ inputs.organization-id }}
+    - name: Install PDK
+      shell: bash
+      run: anypoint-cli-v4 plugins:install anypoint-cli-pdk-plugin

@@ -1,0 +1,28 @@
+name: build-and-publish
+on:
+  push:
+  
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: PDK Setup
+        uses: ./.github/actions/setup-pdk
+        with:
+          connected-app-id: ${{ secrets.CONNECTED_APP_ID }}
+          connected-app-secret: ${{ secrets.CONNECTED_APP_SECRET }}
+          organization-id: ${{ secrets.ORGANIZATION_ID }}
+      - name: Set organization ID in TOML
+        env:
+          ORGANIZATION_ID: ${{ secrets.ORGANIZATION_ID }}
+        run: sed -i "s/ORGANIZATION_ID/$ORGANIZATION_ID/g" ./Cargo.toml
+      - name: Make Setup
+        run: make setup
+      - name: Publish DEV
+        if: ${{ github.ref != 'refs/heads/main' }}
+        run: make publish
+      - name: Publish Release
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: make release
