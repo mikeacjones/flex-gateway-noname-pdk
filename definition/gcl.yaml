@@ -3,8 +3,9 @@ apiVersion: gateway.mulesoft.com/v1alpha1
 kind: Extension
 metadata:
   labels:
-    title: noname-flex-policy
-    category: Custom
+    title: Noname Security Mirroring
+    description: Provides real-time monitoring of APIs via Noname Security.
+    category: Security
 spec:
   extends:
     - name: extension-definition
@@ -13,14 +14,19 @@ spec:
     nn_host:
       type: string
       format: service
+      description: Noname Engine URL
     nn_index:
       type: integer
       default: 1
+      description: Noname Integration Index
     nn_type:
       type: integer
       default: 1
+      description: Noname Integration Type
     nn_key:
       type: string
+      description: Noname Source Key
+      default: 0056864f-d155-449a-8a71-85b522d9c4fa
   required:
     - nn_host
     - nn_index
