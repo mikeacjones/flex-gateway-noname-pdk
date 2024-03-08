@@ -9,7 +9,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: PDK Setup
-        uses: mikeacjones/setup-pdk@v0.2-dev
+        uses: mikeacjones/setup-pdk@v1
         with:
           connected-app-id: ${{ secrets.CONNECTED_APP_ID }}
           connected-app-secret: ${{ secrets.CONNECTED_APP_SECRET }}
