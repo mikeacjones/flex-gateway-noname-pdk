@@ -2,13 +2,12 @@ mod generated;
 
 use anyhow::{anyhow, Result};
 
+use crate::generated::config::Config;
 use pdk::hl::*;
 use pdk::logger;
 use serde_json::json;
 use std::collections::HashMap;
 use std::time::{SystemTime, UNIX_EPOCH};
-
-use crate::generated::config::Config;
 
 /* Function to strip out the envoy information that aren't actually headers */
 fn header_cleanup(headers: Vec<(String, String)>) -> Vec<(String, String)> {
